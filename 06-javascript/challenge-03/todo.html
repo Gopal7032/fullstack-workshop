@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Todo with Categories</title>
+</head>
+<body>
+
+  <h2>Todo List</h2>
+
+  <input type="text" id="taskInput" placeholder="Add task">
+  
+  <select id="categorySelect">
+    <option value="Work">Work</option>
+    <option value="Personal">Personal</option>
+  </select>
+
+  <button id="addBtn">Add</button>
+
+  <hr>
+
+  <div>
+    Filter:
+    <button class="filter" data-category="All">All</button>
+    <button class="filter" data-category="Work">Work</button>
+    <button class="filter" data-category="Personal">Personal</button>
+  </div>
+
+  <ul id="taskList"></ul>
+
+  <script src="todo.js"></script>
+</body>
+</html>
