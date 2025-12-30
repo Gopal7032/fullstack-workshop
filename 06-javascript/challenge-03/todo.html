@@ -1,31 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todo with Categories</title>
 </head>
+
 <body>
 
-  <h2>Todo List</h2>
+  <header>
+    <h2>Todo List</h2>
+  </header>
 
-  <input type="text" id="taskInput" placeholder="Add task">
-  
-  <select id="categorySelect">
-    <option value="Work">Work</option>
-    <option value="Personal">Personal</option>
-  </select>
+  <main>
+    <section>
+      <input
+        type="text"
+        id="taskInput"
+        placeholder="Add task"
+        aria-label="Task name"
+      >
 
-  <button id="addBtn">Add</button>
+      <select id="categorySelect" aria-label="Task category">
+        <option value="Work">Work</option>
+        <option value="Personal">Personal</option>
+      </select>
 
-  <hr>
+      <button id="addBtn">Add</button>
+    </section>
 
-  <div>
-    Filter:
-    <button class="filter" data-category="All">All</button>
-    <button class="filter" data-category="Work">Work</button>
-    <button class="filter" data-category="Personal">Personal</button>
-  </div>
+    <hr>
 
-  <ul id="taskList"></ul>
+    <section>
+      <p>Filter:</p>
+      <button class="filter" data-category="All">All</button>
+      <button class="filter" data-category="Work">Work</button>
+      <button class="filter" data-category="Personal">Personal</button>
+    </section>
+
+    <section>
+      <ul id="taskList"></ul>
+    </section>
+  </main>
 
   <script src="todo.js"></script>
 </body>

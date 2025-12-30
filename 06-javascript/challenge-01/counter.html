@@ -1,36 +1,48 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Js1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Counter</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 200px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .box {
+            border: 5px dashed black;
+            padding: 15px;
+            text-align: center;
+        }
+    </style>
 </head>
-<body style="display: flex; 
 
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 200px; 
-    height: auto;
-    margin: auto;" >
+<body>
+    <main class="box">
+        <h2 id="counter">0</h2>
 
-    <div style = "border: 5px dashed black;"> 
-        <style>
-            h2{
-                text-align: center;
-            }
-        </style>
-    <h2 id="counter">0</h2>
-    
-    <button onclick ="increasebtn()">Increase</button>
-    <button onclick ="resetbtn()">Reset</button>
-    <button onclick="decreasebtn()">Decrease</button>
-    <P>__________________________________________________________________</P>
-    <h3>step</h3>
-    <button onclick = "Adding1()">[1]</button>
-    <button onclick = "Adding5()">[5]</button>
-    <button onclick = "Adding10()" >[10]</button></div>
+        <button onclick="increasebtn()">Increase</button>
+        <button onclick="resetbtn()">Reset</button>
+        <button onclick="decreasebtn()">Decrease</button>
+
+        <hr>
+
+        <h3>Step</h3>
+        <button onclick="Adding1()">[1]</button>
+        <button onclick="Adding5()">[5]</button>
+        <button onclick="Adding10()">[10]</button>
+    </main>
+
     <script src="counter.js"></script>
-
-    </body>
-
-
 </body>
-</html
+</html>

@@ -4,88 +4,64 @@ function createShoppingCart() {
 
   return {
 
-    // Add item to cart
     addItem(product) {
       const existingItem = items.find(item => item.id === product.id);
 
       if (existingItem) {
         existingItem.quantity += product.quantity;
+        console.log(`Updated ${existingItem.name} quantity to ${existingItem.quantity}`);
       } else {
         items.push({ ...product });
+        console.log(`Added ${product.name} to cart`);
       }
     },
 
-    // Remove item by id
     removeItem(id) {
       items = items.filter(item => item.id !== id);
+      console.log(`Removed item with id ${id}`);
     },
 
-    // Update quantity of an item
     updateQuantity(id, quantity) {
       const item = items.find(item => item.id === id);
-      if (item) {
+      if (item && quantity > 0) {
         item.quantity = quantity;
+        console.log(`Quantity updated: ${item.name} → ${quantity}`);
       }
     },
 
-    // Get all items
     getItems() {
       return items;
     },
 
-    // Get total price (with discount applied)
     getTotal() {
-      const total = items.reduce((sum, item) => {
-        return sum + item.price * item.quantity;
-      }, 0);
+      const total = items.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
 
-      return +(total - (total * discountPercent) / 100).toFixed(2);
+      const discountedTotal = total - (total * discountPercent) / 100;
+      return +discountedTotal.toFixed(2);
     },
 
-    // Get total quantity of all items
     getItemCount() {
       return items.reduce((count, item) => count + item.quantity, 0);
     },
 
-    // Check if cart is empty
     isEmpty() {
       return items.length === 0;
     },
 
-    // Apply discount
     applyDiscount(code, percent) {
       if (code && percent > 0) {
         discountPercent = percent;
+        console.log(`Discount applied: ${percent}% (${code})`);
       }
     },
 
-    // Clear cart
     clear() {
       items = [];
       discountPercent = 0;
+      console.log(`Cart cleared`);
     }
   };
 }
-
-//TEST
-const cart = createShoppingCart();
-
-cart.addItem({ id: 1, name: "Laptop", price: 999, quantity: 1 });
-cart.addItem({ id: 2, name: "Mouse", price: 29, quantity: 2 });
-cart.addItem({ id: 1, name: "Laptop", price: 999, quantity: 1 });
-
-console.log(cart.getItems());
-// Laptop quantity = 2, Mouse quantity = 2
-
-cart.updateQuantity(1, 3);
-cart.removeItem(2);
-
-console.log(cart.getTotal());       // 2997
-console.log(cart.getItemCount());   // 3
-console.log(cart.isEmpty());        // false
-
-cart.applyDiscount("SAVE10", 10);
-console.log(cart.getTotal());       // 2697.30
-
-cart.clear();
-console.log(cart.isEmpty());        // true

@@ -1,94 +1,77 @@
-
 const username = document.getElementById("username");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirmPassword");
 const submitButton = document.getElementById("submitBtn");
+const form = document.getElementById("registerForm");
 
-function showError(input, message) {
-  input.nextElementSibling.innerText = message;
-}
+const showError = (input, message) => {
+  input.nextElementSibling.textContent = `${message}`;
+};
 
+const showSuccess = (input) => {
+  input.nextElementSibling.textContent = "";
+};
 
-function showSuccess(input) {
-  input.nextElementSibling.innerText = "";
-}
-
-function validateUsername() {
+const validateUsername = () => {
   const regex = /^[a-zA-Z0-9]{3,15}$/;
-  if (!regex.test(username.value.trim())) {
-    showError(username, "Username must be 3–15 alphanumeric characters");
+  const value = username.value.trim();
+
+  if (!regex.test(value)) {
+    showError(username, `Username must be 3–15 alphanumeric characters`);
     return false;
   }
   showSuccess(username);
   return true;
-}
+};
 
-
-function validateEmail() {
+const validateEmail = () => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   if (!regex.test(email.value.trim())) {
-    showError(email, "Invalid email format");
+    showError(email, `Invalid email format`);
     return false;
   }
   showSuccess(email);
   return true;
-}
+};
 
-
-
-function validatePassword() {
+const validatePassword = () => {
   const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
   if (!regex.test(password.value)) {
-    showError(password, "Password must be strong");
+    showError(password, `Password must contain 8+ chars, 1 uppercase, 1 number & 1 symbol`);
     return false;
   }
   showSuccess(password);
   return true;
-}
+};
 
-
-function validateConfirmPassword() {
-  if (confirmPassword.value !== password.value || confirmPassword.value === "") {
-    showError(confirmPassword, "Passwords do not match");
+const validateConfirmPassword = () => {
+  if (confirmPassword.value === "" || confirmPassword.value !== password.value) {
+    showError(confirmPassword, `Passwords do not match`);
     return false;
   }
   showSuccess(confirmPassword);
   return true;
-}
+};
 
-function formValidity() {
-  submitButton.disabled = !(
-    validateUsername() &&
-    validateEmail() &&
-    validatePassword() &&
-    validateConfirmPassword()
-  );
-}
+// Array-based validation (clean & scalable)
+const validators = [
+  validateUsername,
+  validateEmail,
+  validatePassword,
+  validateConfirmPassword
+];
 
-username.addEventListener("blur", () => {
-  validateUsername();
-  formValidity();
+const formValidity = () => {
+  submitButton.disabled = !validators.every(fn => fn());
+};
+
+// Event listeners
+[username, email, password, confirmPassword].forEach(input => {
+  input.addEventListener("blur", formValidity);
 });
 
-
-email.addEventListener("blur", () => {
-  validateEmail();
-  formValidity();
-});
-
-
-password.addEventListener("blur", () => {
-  validatePassword();
-  formValidity();
-});
-
-
-confirmPassword.addEventListener("blur", () => {
-  validateConfirmPassword();
-  formValidity();
-});
-
-// Prevent form submission for demonstration purposes
-document.getElementById("registerForm")
-  .addEventListener("submit", (e) => e.preventDefault());
+// Prevent submission (demo)
+form.addEventListener("submit", e => e.preventDefault());

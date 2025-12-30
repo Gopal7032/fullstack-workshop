@@ -3,19 +3,17 @@ function createLibrary() {
   const members = [];
   const borrowRecords = [];
 
-
-  // ADD BOOK
-  function addBook(book) {
+  const addBook = book => {
     books.push({ ...book });
-  }
+    console.log(`Book added: "${book.title}" (${book.isbn})`);
+  };
 
-  // ADD MEMBER
-  function addMember(member) {
+  const addMember = member => {
     members.push({ ...member });
-  }
+    console.log(`Member added: ${member.name} (${member.id})`);
+  };
 
-  // BORROW BOOK
-  function borrowBook(memberId, isbn) {
+  const borrowBook = (memberId, isbn) => {
     const book = books.find(b => b.isbn === isbn);
     const member = members.find(m => m.id === memberId);
 
@@ -30,10 +28,13 @@ function createLibrary() {
       borrowedAt: new Date(),
       returnedAt: null
     });
-  }
 
-  // RETURN BOOK
-  function returnBook(memberId, isbn) {
+    console.log(
+      `${member.name} borrowed "${book.title}" on ${new Date().toLocaleDateString()}`
+    );
+  };
+
+  const returnBook = (memberId, isbn) => {
     const record = borrowRecords.find(
       r => r.memberId === memberId && r.isbn === isbn && r.returnedAt === null
     );
@@ -43,21 +44,18 @@ function createLibrary() {
     record.returnedAt = new Date();
 
     const book = books.find(b => b.isbn === isbn);
-    if (book) {
-      book.copies++;
-    }
-  }
+    if (book) book.copies++;
 
-  // AVAILABLE COPIES
-  function getAvailableCopies(isbn) {
+    console.log(`Book returned: "${record.title}" by member ${memberId}`);
+  };
+
+  const getAvailableCopies = isbn => {
     const book = books.find(b => b.isbn === isbn);
     return book ? book.copies : 0;
-  }
+  };
 
-
-  // MEMBER HISTORY
-  function getMemberHistory(memberId) {
-    return borrowRecords
+  const getMemberHistory = memberId =>
+    borrowRecords
       .filter(r => r.memberId === memberId)
       .map(r => ({
         isbn: r.isbn,
@@ -65,34 +63,25 @@ function createLibrary() {
         borrowedAt: r.borrowedAt,
         returnedAt: r.returnedAt
       }));
-  }
 
-
-  // OVERDUE BOOKS (> 14 days)
-  function getOverdueBooks() {
+  const getOverdueBooks = () => {
     const now = new Date();
     const fourteenDays = 14 * 24 * 60 * 60 * 1000;
 
-    return borrowRecords.filter(r => {
-      return (
-        r.returnedAt === null &&
-        now - r.borrowedAt > fourteenDays
-      );
-    });
-  }
-
-
-  // SEARCH BOOKS
-  function searchBooks(query) {
-    const q = query.toLowerCase();
-    return books.filter(book =>
-      book.title.toLowerCase().includes(q) ||
-      book.author.toLowerCase().includes(q)
+    return borrowRecords.filter(
+      r => r.returnedAt === null && now - r.borrowedAt > fourteenDays
     );
-  }
+  };
 
+  const searchBooks = query => {
+    const q = query.toLowerCase();
+    return books.filter(
+      book =>
+        book.title.toLowerCase().includes(q) ||
+        book.author.toLowerCase().includes(q)
+    );
+  };
 
-  // PUBLIC API ENDPOINTS
   return {
     addBook,
     addMember,
@@ -104,26 +93,3 @@ function createLibrary() {
     searchBooks
   };
 }
-
-//TEST
-const library = createLibrary();
-
-// Add books
-library.addBook({ isbn: '123', title: '1984', author: 'Orwell', copies: 3 });
-library.addBook({ isbn: '456', title: 'Dune', author: 'Herbert', copies: 2 });
-
-// Add members
-library.addMember({ id: 'M1', name: 'John', email: 'john@example.com' });
-library.addMember({ id: 'M2', name: 'Jane', email: 'jane@example.com' });
-
-// Borrow books
-library.borrowBook('M1', '123');
-library.borrowBook('M2', '123');
-
-console.log(library.getAvailableCopies('123')); // 1
-
-library.returnBook('M1', '123');
-
-console.log(library.getMemberHistory('M1'));
-
-console.log(library.searchBooks('orwell'));
