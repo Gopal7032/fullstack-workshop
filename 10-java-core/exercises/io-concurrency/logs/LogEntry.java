@@ -1,0 +1,1 @@
+public record LogEntry(String timestamp, String level, String message) {}

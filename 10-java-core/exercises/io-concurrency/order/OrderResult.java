@@ -1,0 +1,1 @@
+public record OrderResult(boolean success,String msg){}
